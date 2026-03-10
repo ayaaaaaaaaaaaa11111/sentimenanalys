@@ -131,10 +131,10 @@
         <h3>BPJS Kesehatan</h3>
       </div>
       <div class="menu">
-        <a href="#">Dashboard</a>
-        <a href="#">Data</a>
-        <a href="#">Prediction</a>
-        <a href="#" class="active">Evaluation</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="data.html">Data</a>
+        <a href="prediction.html">Prediction</a>
+        <a href="evaluation.html" class="active">Evaluation</a>
       </div>
     </div>
 
@@ -239,7 +239,6 @@
           complete: function (results) {
             const data = results.data;
 
-            // Inisialisasi Metrik
             let lexMetrics = {
               positive: { tp: 0, fp: 0, fn: 0 },
               negative: { tp: 0, fp: 0, fn: 0 },
@@ -304,7 +303,6 @@
               return;
             }
 
-            // Fungsi untuk Mengisi Tabel
             function fillTable(metrics) {
               let html = "";
               ["positive", "negative", "neutral"].forEach((label) => {
@@ -321,7 +319,6 @@
               return html;
             }
 
-            // Update Tampilan
             document.getElementById("accValue").innerText =
               ((correctLexicon / totalValid) * 100).toFixed(2) + "%";
             document.getElementById("reportContent").innerHTML =

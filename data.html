@@ -399,22 +399,29 @@
           htmlBody = data
             .slice(0, 50)
             .map((row) => {
-              let review =
-                row["Review Text"] || row["review_text"] || row["text"] || "-";
-              let rtgLabel = row["rating_label"] || row["Rating Based"] || "-";
-              let lexLabel =
-                row["sentiment_label"] ||
-                row["sentimen"] ||
-                row["Lexicon Based"] ||
-                "-";
+              let review = row["Review Text"] || row["review_text"] || row["text"] || "-";
+              
+              let rtgValue = parseInt(row["Rating"] || row["rating"] || row["score"] || 0);
+
+              let rtgLabel = row["rating_label"] || row["Rating Based"] || row["Rating Label"] || "";
+              
+               if (!rtgLabel && rtgValue > 0) {
+                rtgLabel = rtgValue >= 4 ? "POSITIVE" : (rtgValue === 3 ? "NEUTRAL" : "NEGATIVE");
+              } else if (!rtgLabel) {
+                rtgLabel = "-";
+              }
+
+              let lexLabel = row["sentimen_label"] || row["sentiment_label"] || row["sentimen"] || row["Lexicon Based"] || "-";
+
               return `<tr>
                 <td title="${review}">${review.substring(0, 35)}...</td>
-                <td>${row["Rating"] || 0}⭐</td>
-                <td><span class="label-box" style="background:${getColor(rtgLabel)}">${rtgLabel}</span></td>
-                <td><span class="label-box" style="background:${getColor(lexLabel)}">${lexLabel}</span></td>
+                <td>${rtgValue}⭐</td>
+                <td><span class="label-box" style="background:${getColor(rtgLabel)}">${rtgLabel.toUpperCase()}</span></td>
+                <td><span class="label-box" style="background:${getColor(lexLabel)}">${lexLabel.toUpperCase()}</span></td>
               </tr>`;
             })
             .join("");
+            
         } else {
           htmlHead = `<tr><th>Review</th><th>Sentimen</th></tr>`;
           htmlBody = data
